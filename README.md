@@ -9,7 +9,8 @@ What this essentially demonstrates is three things:
 
 1. Messages route to/ from the Echo handler as expected.
 2. The service starts/ stops gracefully.
-3. Both `host` and `port` can be configured as needed (see **Configuring** below).
+3. Both `host` and `port` can be configured as needed (see **Configuring** 
+below).
 
 
 ## Running
@@ -21,7 +22,11 @@ pip install -r requirements.txt
 python3 ./main.py
 ```
 
-The 
+The echo service will return any message passed to it.
+
+For referece, this has been tested primarily with a client also built from the 
+`websockets` package. Other clients will likely need to manage client pinging/ 
+heartbeat manually, which `websockets` does under the hood.
 
 Run in Docker contianer:
 
