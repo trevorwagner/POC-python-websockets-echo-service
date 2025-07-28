@@ -1,6 +1,6 @@
 import asyncio, websockets
 
-from ws_echo_service.echo_service import EchoService
+from ws_echo_service.echo_handler import EchoHandler
 from ws_echo_service.pubsub import Publisher, Subscriber
 
 
@@ -46,8 +46,8 @@ async def client_handler(client: websockets.ServerConnection):
     inbound_messages = Subscriber(f"new-websocket-messages-{client.id}")
     Publisher().subscribe(inbound_messages, inbound_messages.name)
 
-    echo_service = asyncio.ensure_future(
-        EchoService(
+    echo_handler = asyncio.ensure_future(
+        EchoHandler(
             ws_events=inbound_messages, interview_events=outbound_messages
         ).interview_visitor()
     )
@@ -55,7 +55,7 @@ async def client_handler(client: websockets.ServerConnection):
     consumer_task = asyncio.ensure_future(consumer(client, inbound_messages))
     producer_task = asyncio.ensure_future(producer(client, outbound_messages))
 
-    tasks = (echo_service, consumer_task, producer_task)
+    tasks = (echo_handler, consumer_task, producer_task)
 
     runtime = asyncio.gather(*tasks)
 
